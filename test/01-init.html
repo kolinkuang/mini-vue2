@@ -1,0 +1,27 @@
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Vue 源码剖析</title>
+<script type="module">
+/*
+    import Vue from '../node_modules/vue/dist/vue.esm.browser.js'
+*/
+    import Vue from '../src/platforms/web/entry-runtime-with-compiler.js'
+    const app = new Vue({
+        el: '#demo',
+        data: {
+            obj: {
+                foo: 'foo'
+            }
+        },
+        mounted() {
+            this.obj.foo = 'fooooooo'
+            setTimeout(() => {
+              this.$set(this.obj, 'bar', 'bar')
+            }, 1000)
+        }
+    })
+</script>
+<div id="demo">
+    <h1>初始化流程</h1>
+    <p>{{ obj.foo }}</p>
+    <p>{{ obj.bar }}</p>
+</div>
