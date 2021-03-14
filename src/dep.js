@@ -1,15 +1,18 @@
+/**
+ * The subject for all watchers to rely on.
+ * **/
 class Dep {
 
     constructor() {
-        this.deps = new Set()
+        this.watchers = new Set()
     }
 
     addDep(watcher) {
-        this.deps.add(watcher)
+        this.watchers.add(watcher)
     }
 
     notify() {
-        this.deps.forEach(watcher => watcher.update())
+        this.watchers.forEach(watcher => watcher.update())
     }
 
 }

@@ -3,7 +3,7 @@ import Dep from './dep.js';
 
 function observe(obj) {
     if (typeof obj !== 'object') {
-        return obj
+        return
     }
 
     new Observer(obj)

@@ -8,6 +8,13 @@
         el: '#app',
         data: {
             counter: 1
+        },
+        render(h) {
+            return h('div', {id: 'app'}, [
+                h('p', null, this.counter + ''),
+                h('p', null, this.counter * 2 + ''),
+                h('p', null, this.counter * 3 + '')
+            ])
         }
     })
     setInterval(() => {

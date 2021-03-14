@@ -1,5 +1,6 @@
 import Watcher from './watcher.js'
 import {observe, proxy} from './core.js'
+import compileToRenderFunction from './compiler.js'
 
 class Vue {
 
@@ -19,16 +20,25 @@ class Vue {
     $mount(el) {
         this.$el = document.querySelector(el)
 
+        const options = this.$options
+        if (!options.render &&
+            this.$el &&
+            this.$el.outerHTML
+        ) {
+            const template = this.$el.outerHTML
+            options.render = compileToRenderFunction(template).render
+        }
+
         const updateComponent = () => {
-            // TODO how to generate render()?
             const {render} = this.$options
-            const vnode = render.call(this, this.$createElement)
+            const vnode = render.call(this, this._c = this.$createElement)
             this._update(vnode)
         }
 
         new Watcher(this, updateComponent)
     }
 
+    // create vnode
     $createElement(tag, props, children) {
         return {tag, props, children}
     }
