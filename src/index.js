@@ -31,16 +31,43 @@ class Vue {
 
         const updateComponent = () => {
             const {render} = this.$options
-            const vnode = render.call(this, this._c = this.$createElement)
+            const vnode = render.call(this, this._c.bind(this))
+
+            console.log(vnode)
             this._update(vnode)
         }
+
+        this._c = this.$createElement
+        this._v = this.createTextNode;
+        this._s = this.toString;
 
         new Watcher(this, updateComponent)
     }
 
     // create vnode
     $createElement(tag, props, children) {
-        return {tag, props, children}
+        return this.vnode(tag, props, children)
+    }
+
+    createTextNode(text) {
+        return this.vnode(null, null, null, text)
+    }
+
+    toString(value) {
+        if (value === null) {
+            return value
+        }
+
+        return typeof value === 'object' ? JSON.stringify(value) : value
+    }
+
+    vnode(tag, props, children, text) {
+        return {
+            tag,
+            props,
+            children,
+            text
+        }
     }
 
     _update(vnode) {
@@ -106,7 +133,7 @@ class Vue {
         if (vnode.children) {
             if (typeof vnode.children === 'string') {
                 el.textContent = vnode.children
-            } else {
+            } else if (Array.isArray(vnode.children)) {
                 vnode.children.forEach(vnode => {
                     el.appendChild(this.createElm(vnode))
                 })
