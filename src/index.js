@@ -33,7 +33,9 @@ class Vue {
             const {render} = this.$options
             const vnode = render.call(this, this._c.bind(this))
 
+            console.log('===== VNode start =====')
             console.log(vnode)
+            console.log('===== VNode end =====')
             this._update(vnode)
         }
 
